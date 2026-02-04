@@ -1,103 +1,107 @@
 <h1 align="center">ACE-Step 1.5</h1>
-<h1 align="center">Pushing the Boundaries of Open-Source Music Generation</h1>
+<h1 align="center">オープンソース音楽生成の限界を押し広げる</h1>
 <p align="center">
-    <a href="https://ace-step.github.io/ace-step-v1.5.github.io/">Project</a> |
+    <a href="https://ace-step.github.io/ace-step-v1.5.github.io/">プロジェクト</a> |
     <a href="https://huggingface.co/ACE-Step/Ace-Step1.5">Hugging Face</a> |
     <a href="https://modelscope.cn/models/ACE-Step/Ace-Step1.5">ModelScope</a> |
-    <a href="https://huggingface.co/spaces/ACE-Step/Ace-Step-v1.5">Space Demo</a> |
+    <a href="https://huggingface.co/spaces/ACE-Step/Ace-Step-v1.5">デモ (Space)</a> |
     <a href="https://discord.gg/PeWDxrkdj7">Discord</a> |
-    <a href="https://arxiv.org/abs/2602.00744">Technical Report</a>
+    <a href="https://arxiv.org/abs/2602.00744">テクニカルレポート</a>
 </p>
 
 <p align="center">
     <img src="./assets/orgnization_logos.png" width="100%" alt="StepFun Logo">
 </p>
 
-## Table of Contents
+## 目次
 
-- [✨ Features](#-features)
-- [📦 Installation](#-installation)
-- [📥 Model Download](#-model-download)
-- [🚀 Usage](#-usage)
-- [📖 Tutorial](#-tutorial)
-- [🔨 Train](#-train)
-- [🏗️ Architecture](#️-architecture)
-- [🦁 Model Zoo](#-model-zoo)
+- [✨ 特徴](#-特徴)
+- [📦 インストール](#-インストール)
+- [📥 モデルのダウンロード](#-モデルのダウンロード)
+- [🚀 使い方](#-使い方)
+- [📖 チュートリアル](#-チュートリアル)
+- [🔨 学習](#-学習)
+- [🏗️ アーキテクチャ](#️-アーキテクチャ)
+- [🦁 モデル Zoo](#-モデル-zoo)
 
-## 📝 Abstract
-🚀 We present ACE-Step v1.5, a highly efficient open-source music foundation model that brings commercial-grade generation to consumer hardware. On commonly used evaluation metrics, ACE-Step v1.5 achieves quality beyond most commercial music models while remaining extremely fast—under 2 seconds per full song on an A100 and under 10 seconds on an RTX 3090. The model runs locally with less than 4GB of VRAM, and supports lightweight personalization: users can train a LoRA from just a few songs to capture their own style.
+## 📝 概要
 
-🌉 At its core lies a novel hybrid architecture where the Language Model (LM) functions as an omni-capable planner: it transforms simple user queries into comprehensive song blueprints—scaling from short loops to 10-minute compositions—while synthesizing metadata, lyrics, and captions via Chain-of-Thought to guide the Diffusion Transformer (DiT). ⚡ Uniquely, this alignment is achieved through intrinsic reinforcement learning relying solely on the model's internal mechanisms, thereby eliminating the biases inherent in external reward models or human preferences. 🎚️
+🚀 私たちは、商用グレードの生成品質をコンシューマー向けハードウェアで実現する、高効率なオープンソース音楽基盤モデル **ACE-Step v1.5** を紹介します。一般的な評価指標において、ACE-Step v1.5は多くの商用音楽モデルを超える品質を達成しながら、A100でフルソング生成に2秒未満、RTX 3090で10秒未満という極めて高速な動作を実現しています。このモデルは4GB未満のVRAMでローカル動作し、軽量なパーソナライズ（LoRA）にも対応しており、ユーザーは数曲のデータから独自のスタイルを学習させることが可能です。
 
-🔮 Beyond standard synthesis, ACE-Step v1.5 unifies precise stylistic control with versatile editing capabilities—such as cover generation, repainting, and vocal-to-BGM conversion—while maintaining strict adherence to prompts across 50+ languages. This paves the way for powerful tools that seamlessly integrate into the creative workflows of music artists, producers, and content creators. 🎸
+🌉 その核心には、Language Model (LM) が万能なプランナーとして機能する新しいハイブリッドアーキテクチャがあります。LMは単純なユーザークエリを包括的な楽曲の設計図（短いループから10分の楽曲まで）に変換し、Chain-of-Thought（思考の連鎖）を通じてメタデータ、歌詞、キャプションを合成し、Diffusion Transformer (DiT) をガイドします。⚡ 独自の特徴として、この整合性はモデルの内部メカニズムのみに依存した内発的強化学習によって達成されており、外部の報酬モデルや人間の好みに起因するバイアスを排除しています。🎚️
 
+🔮 標準的な合成を超えて、ACE-Step v1.5は、カバー生成、リペイント（部分修正）、ボーカルからBGMへの変換など、多彩な編集機能と正確なスタイル制御を統合し、50以上の言語でのプロンプト遵守を維持しています。これは、音楽アーティスト、プロデューサー、コンテンツクリエイターのワークフローにシームレスに統合される強力なツールへの道を切り開きます。🎸
 
-## ✨ Features
+## ✨ 特徴
 
 <p align="center">
     <img src="./assets/application_map.png" width="100%" alt="ACE-Step Framework">
 </p>
 
-### ⚡ Performance
-- ✅ **Ultra-Fast Generation** — Under 2s per full song on A100, under 10s on RTX 3090 (0.5s to 10s on A100 depending on think mode & diffusion steps)
-- ✅ **Flexible Duration** — Supports 10 seconds to 10 minutes (600s) audio generation
-- ✅ **Batch Generation** — Generate up to 8 songs simultaneously
+### ⚡ パフォーマンス
 
-### 🎵 Generation Quality
-- ✅ **Commercial-Grade Output** — Quality beyond most commercial music models (between Suno v4.5 and Suno v5)
-- ✅ **Rich Style Support** — 1000+ instruments and styles with fine-grained timbre description
-- ✅ **Multi-Language Lyrics** — Supports 50+ languages with lyrics prompt for structure & style control
+- ✅ **超高速生成** — A100でフルソング生成2秒未満、RTX 3090で10秒未満（思考モードと拡散ステップにより0.5秒〜10秒）
+- ✅ **柔軟な長さ** — 10秒から10分（600秒）の音声生成をサポート
+- ✅ **バッチ生成** — 最大8曲を同時に生成可能
 
-### 🎛️ Versatility & Control
+### 🎵 生成品質
 
-| Feature | Description |
-|---------|-------------|
-| ✅ Reference Audio Input | Use reference audio to guide generation style |
-| ✅ Cover Generation | Create covers from existing audio |
-| ✅ Repaint & Edit | Selective local audio editing and regeneration |
-| ✅ Track Separation | Separate audio into individual stems |
-| ✅ Multi-Track Generation | Add layers like Suno Studio's "Add Layer" feature |
-| ✅ Vocal2BGM | Auto-generate accompaniment for vocal tracks |
-| ✅ Metadata Control | Control duration, BPM, key/scale, time signature |
-| ✅ Simple Mode | Generate full songs from simple descriptions |
-| ✅ Query Rewriting | Auto LM expansion of tags and lyrics |
-| ✅ Audio Understanding | Extract BPM, key/scale, time signature & caption from audio |
-| ✅ LRC Generation | Auto-generate lyric timestamps for generated music |
-| ✅ LoRA Training | One-click annotation & training in Gradio. 8 songs, 1 hour on 3090 (12GB VRAM) |
-| ✅ Quality Scoring | Automatic quality assessment for generated audio |
+- ✅ **商用グレードの出力** — 多くの商用音楽モデルを超える品質（Suno v4.5とSuno v5の間）
+- ✅ **豊富なスタイルサポート** — 1000以上の楽器とスタイル、詳細な音色記述に対応
+- ✅ **多言語歌詞** — 50以上の言語に対応し、歌詞プロンプトによる構造とスタイルの制御が可能
 
-## Staying ahead
------------------
-Star ACE-Step on GitHub and be instantly notified of new releases
+### 🎛️ 汎用性と制御
+
+| 機能                  | 説明                                                               |
+| --------------------- | ------------------------------------------------------------------ |
+| ✅ 参照オーディオ入力 | 参照オーディオを使用して生成スタイルをガイド                       |
+| ✅ カバー生成         | 既存のオーディオからカバーを作成                                   |
+| ✅ リペイント & 編集  | 特定部分のオーディオ編集と再生成                                   |
+| ✅ トラック分離       | オーディオを個々のステム（パート）に分離                           |
+| ✅ マルチトラック生成 | Suno Studioの「レイヤー追加」のような機能                          |
+| ✅ Vocal2BGM          | ボーカルトラックの伴奏を自動生成                                   |
+| ✅ メタデータ制御     | 長さ、BPM、キー/スケール、拍子の制御                               |
+| ✅ シンプルモード     | 簡単な説明からフルソングを生成                                     |
+| ✅ クエリ書き換え     | LMによるタグと歌詞の自動拡張                                       |
+| ✅ オーディオ理解     | オーディオからBPM、キー/スケール、拍子、キャプションを抽出         |
+| ✅ LRC生成            | 生成された音楽の歌詞タイムスタンプを自動生成                       |
+| ✅ LoRA学習           | Gradioでのワンクリック注釈＆学習。RTX 3090 (12GB VRAM) で8曲/1時間 |
+| ✅ 品質スコアリング   | 生成されたオーディオの自動品質評価                                 |
+
+## 最新情報を入手
+
+---
+
+GitHubでACE-Stepにスターをつけて、新着リリースを即座に通知してもらいましょう
 ![](assets/star.gif)
 
-## 📦 Installation
+## 📦 インストール
 
-> **Requirements:** Python 3.11, CUDA GPU recommended (works on CPU/MPS but slower)
+> **必須要件:** Python 3.11, CUDA GPU 推奨 (CPU/MPSでも動作しますが遅くなります)
 
-### 🪟 Windows Portable Package (Recommended for Windows)
+### 🪟 Windows ポータブルパッケージ (Windows 推奨)
 
-For Windows users, we provide a portable package with pre-installed dependencies:
+Windowsユーザー向けに、依存関係がインストール済みのポータブルパッケージを提供しています：
 
-1. Download and extract: [ACE-Step-1.5.7z](https://files.acemusic.ai/acemusic/win/ACE-Step-1.5.7z)
-2. The package includes `python_embeded` with all dependencies pre-installed
-3. **Requirements:** CUDA 12.8
+1. ダウンロードして解凍: [ACE-Step-1.5.7z](https://files.acemusic.ai/acemusic/win/ACE-Step-1.5.7z)
+2. パッケージにはすべての依存関係が含まれた `python_embeded` が同梱されています
+3. **要件:** CUDA 12.8
 
-**Launch:**
+**起動:**
 
 ```bash
 # Gradio Web UI
 python_embeded\python -m acestep.entry.gradio_app
 
-# REST API Server
+# REST API サーバー
 python_embeded\python -m acestep.entry.api_server
 ```
 
 ---
 
-### Standard Installation (All Platforms)
+### 通常インストール (全プラットフォーム)
 
-### 1. Install uv (Package Manager)
+### 1. uv (パッケージマネージャー) のインストール
 
 ```bash
 # macOS / Linux
@@ -107,7 +111,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### 2. Clone & Install
+### 2. クローン & インストール
 
 ```bash
 git clone https://github.com/ACE-Step/ACE-Step-1.5.git
@@ -115,112 +119,113 @@ cd ACE-Step-1.5
 uv sync
 ```
 
-### 3. Launch
+### 3. 起動
 
-#### 🖥️ Gradio Web UI (Recommended)
+#### 🖥️ Gradio Web UI (推奨)
 
 ```bash
 uv run acestep
 ```
 
-Open http://localhost:7860 in your browser. Models will be downloaded automatically on first run.
+ブラウザで http://localhost:7860 を開きます。初回実行時にモデルが自動的にダウンロードされます。
 
-#### 🌐 REST API Server
+#### 🌐 REST API サーバー
 
 ```bash
 uv run acestep-api
 ```
 
-API runs at http://localhost:8001. See [API Documentation](./docs/en/API.md) for endpoints.
+APIは http://localhost:8001 で動作します。エンドポイントについては [API ドキュメント](./docs/en/API.md) を参照してください。
 
-### Command Line Options
+### コマンドラインオプション
 
 **Gradio UI (`acestep`):**
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--port` | 7860 | Server port |
-| `--server-name` | 127.0.0.1 | Server address (use `0.0.0.0` for network access) |
-| `--share` | false | Create public Gradio link |
-| `--language` | en | UI language: `en`, `zh`, `ja` |
-| `--init_service` | false | Auto-initialize models on startup |
-| `--config_path` | auto | DiT model (e.g., `acestep-v15-turbo`, `acestep-v15-turbo-shift3`) |
-| `--lm_model_path` | auto | LM model (e.g., `acestep-5Hz-lm-0.6B`, `acestep-5Hz-lm-1.7B`) |
-| `--offload_to_cpu` | auto | CPU offload (auto-enabled if VRAM < 16GB) |
-| `--enable-api` | false | Enable REST API endpoints alongside Gradio UI |
-| `--api-key` | none | API key for API endpoints authentication |
-| `--auth-username` | none | Username for Gradio authentication |
-| `--auth-password` | none | Password for Gradio authentication |
+| オプション         | デフォルト | 説明                                                             |
+| ------------------ | ---------- | ---------------------------------------------------------------- |
+| `--port`           | 7860       | サーバーポート                                                   |
+| `--server-name`    | 127.0.0.1  | サーバーアドレス (ネットワークアクセスの場合は `0.0.0.0` を使用) |
+| `--share`          | false      | 公開用Gradioリンクを作成                                         |
+| `--language`       | en         | UI言語: `en`, `zh`, `ja`                                         |
+| `--init_service`   | false      | 起動時にモデルを自動初期化                                       |
+| `--config_path`    | auto       | DiTモデル (例: `acestep-v15-turbo`, `acestep-v15-turbo-shift3`)  |
+| `--lm_model_path`  | auto       | LMモデル (例: `acestep-5Hz-lm-0.6B`, `acestep-5Hz-lm-1.7B`)      |
+| `--offload_to_cpu` | auto       | CPUオフロード (VRAM < 16GB の場合自動有効化)                     |
+| `--enable-api`     | false      | Gradio UIと同時にREST APIエンドポイントを有効化                  |
+| `--api-key`        | none       | APIエンドポイント認証用APIキー                                   |
+| `--auth-username`  | none       | Gradio認証用ユーザー名                                           |
+| `--auth-password`  | none       | Gradio認証用パスワード                                           |
 
-**Examples:**
+**例:**
 
 ```bash
-# Public access with Chinese UI
+# 中国語UIで外部アクセスを許可
 uv run acestep --server-name 0.0.0.0 --share --language zh
 
-# Pre-initialize models on startup
+# 起動時にモデルを事前初期化
 uv run acestep --init_service true --config_path acestep-v15-turbo
 
-# Enable API endpoints with authentication
+# 認証付きでAPIエンドポイントを有効化
 uv run acestep --enable-api --api-key sk-your-secret-key --port 8001
 
-# Enable both Gradio auth and API auth
+# Gradio認証とAPI認証の両方を有効化
 uv run acestep --enable-api --api-key sk-123456 --auth-username admin --auth-password password
 ```
 
-### Development
+### 開発
 
 ```bash
-# Add dependencies
+# 依存関係の追加
 uv add package-name
 uv add --dev package-name
 
-# Update all dependencies
+# すべての依存関係を更新
 uv sync --upgrade
 ```
 
-## 📥 Model Download
+## 📥 モデルのダウンロード
 
-Models are automatically downloaded from [HuggingFace]https://huggingface.co/ACE-Step/Ace-Step1.5) or [ModelScope](https://modelscope.cn/organization/ACE-Step) on first run. You can also manually download models using the CLI or `huggingface-cli`.
+モデルは初回実行時に [HuggingFace](https://huggingface.co/ACE-Step/Ace-Step1.5) または [ModelScope](https://modelscope.cn/organization/ACE-Step) から自動的にダウンロードされます。CLIまたは `huggingface-cli` を使用して手動でダウンロードすることも可能です。
 
-### Automatic Download
+### 自動ダウンロード
 
-When you run `acestep` or `acestep-api`, the system will:
-1. Check if the required models exist in `./checkpoints`
-2. If not found, automatically download them from HuggingFace
+`acestep` または `acestep-api` を実行すると、システムは以下を行います：
 
-### Manual Download with CLI
+1. `./checkpoints` に必要なモデルが存在するか確認
+2. 見つからない場合、HuggingFaceから自動的にダウンロード
+
+### CLIでの手動ダウンロード
 
 ```bash
-# Download main model (includes everything needed to run)
+# メインモデルのダウンロード (実行に必要なすべてを含む)
 uv run acestep-download
 
-# Download all available models (including optional variants)
+# 利用可能なすべてのモデルをダウンロード (オプションのバリエーションを含む)
 uv run acestep-download --all
 
-# Download a specific model
+# 特定のモデルをダウンロード
 uv run acestep-download --model acestep-v15-sft
 
-# List all available models
+# 利用可能なモデルを一覧表示
 uv run acestep-download --list
 
-# Download to a custom directory
+# 指定ディレクトリにダウンロード
 uv run acestep-download --dir /path/to/checkpoints
 ```
 
-### Manual Download with huggingface-cli
+### huggingface-cli での手動ダウンロード
 
-You can also use `huggingface-cli` directly:
+`huggingface-cli` を直接使用することも可能です：
 
 ```bash
-# Download main model (includes vae, Qwen3-Embedding-0.6B, acestep-v15-turbo, acestep-5Hz-lm-1.7B)
+# メインモデルのダウンロード (vae, Qwen3-Embedding-0.6B, acestep-v15-turbo, acestep-5Hz-lm-1.7B を含む)
 huggingface-cli download ACE-Step/Ace-Step1.5 --local-dir ./checkpoints
 
-# Download optional LM models
+# オプションのLMモデルのダウンロード
 huggingface-cli download ACE-Step/acestep-5Hz-lm-0.6B --local-dir ./checkpoints/acestep-5Hz-lm-0.6B
 huggingface-cli download ACE-Step/acestep-5Hz-lm-4B --local-dir ./checkpoints/acestep-5Hz-lm-4B
 
-# Download optional DiT models
+# オプションのDiTモデルのダウンロード
 huggingface-cli download ACE-Step/acestep-v15-base --local-dir ./checkpoints/acestep-v15-base
 huggingface-cli download ACE-Step/acestep-v15-sft --local-dir ./checkpoints/acestep-v15-sft
 huggingface-cli download ACE-Step/acestep-v15-turbo-shift1 --local-dir ./checkpoints/acestep-v15-turbo-shift1
@@ -228,121 +233,120 @@ huggingface-cli download ACE-Step/acestep-v15-turbo-shift3 --local-dir ./checkpo
 huggingface-cli download ACE-Step/acestep-v15-turbo-continuous --local-dir ./checkpoints/acestep-v15-turbo-continuous
 ```
 
-### Available Models
+### 利用可能なモデル
 
-| Model | HuggingFace Repo | Description |
-|-------|------------------|-------------|
-| **Main** | [ACE-Step/Ace-Step1.5](https://huggingface.co/ACE-Step/Ace-Step1.5) | Core components: vae, Qwen3-Embedding-0.6B, acestep-v15-turbo, acestep-5Hz-lm-1.7B |
-| acestep-5Hz-lm-0.6B | [ACE-Step/acestep-5Hz-lm-0.6B](https://huggingface.co/ACE-Step/acestep-5Hz-lm-0.6B) | Lightweight LM model (0.6B params) |
-| acestep-5Hz-lm-4B | [ACE-Step/acestep-5Hz-lm-4B](https://huggingface.co/ACE-Step/acestep-5Hz-lm-4B) | Large LM model (4B params) |
-| acestep-v15-base | [ACE-Step/acestep-v15-base](https://huggingface.co/ACE-Step/acestep-v15-base) | Base DiT model |
-| acestep-v15-sft | [ACE-Step/acestep-v15-sft](https://huggingface.co/ACE-Step/acestep-v15-sft) | SFT DiT model |
-| acestep-v15-turbo-shift1 | [ACE-Step/acestep-v15-turbo-shift1](https://huggingface.co/ACE-Step/acestep-v15-turbo-shift1) | Turbo DiT with shift1 |
-| acestep-v15-turbo-shift3 | [ACE-Step/acestep-v15-turbo-shift3](https://huggingface.co/ACE-Step/acestep-v15-turbo-shift3) | Turbo DiT with shift3 |
-| acestep-v15-turbo-continuous | [ACE-Step/acestep-v15-turbo-continuous](https://huggingface.co/ACE-Step/acestep-v15-turbo-continuous) | Turbo DiT with continuous shift (1-5) |
+| モデル                       | HuggingFace リポジトリ                                                                                | 説明                                                                                  |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Main**                     | [ACE-Step/Ace-Step1.5](https://huggingface.co/ACE-Step/Ace-Step1.5)                                   | コアコンポーネント: vae, Qwen3-Embedding-0.6B, acestep-v15-turbo, acestep-5Hz-lm-1.7B |
+| acestep-5Hz-lm-0.6B          | [ACE-Step/acestep-5Hz-lm-0.6B](https://huggingface.co/ACE-Step/acestep-5Hz-lm-0.6B)                   | 軽量LMモデル (0.6B params)                                                            |
+| acestep-5Hz-lm-4B            | [ACE-Step/acestep-5Hz-lm-4B](https://huggingface.co/ACE-Step/acestep-5Hz-lm-4B)                       | 大規模LMモデル (4B params)                                                            |
+| acestep-v15-base             | [ACE-Step/acestep-v15-base](https://huggingface.co/ACE-Step/acestep-v15-base)                         | ベースDiTモデル                                                                       |
+| acestep-v15-sft              | [ACE-Step/acestep-v15-sft](https://huggingface.co/ACE-Step/acestep-v15-sft)                           | SFT DiTモデル                                                                         |
+| acestep-v15-turbo-shift1     | [ACE-Step/acestep-v15-turbo-shift1](https://huggingface.co/ACE-Step/acestep-v15-turbo-shift1)         | Turbo DiT (shift1)                                                                    |
+| acestep-v15-turbo-shift3     | [ACE-Step/acestep-v15-turbo-shift3](https://huggingface.co/ACE-Step/acestep-v15-turbo-shift3)         | Turbo DiT (shift3)                                                                    |
+| acestep-v15-turbo-continuous | [ACE-Step/acestep-v15-turbo-continuous](https://huggingface.co/ACE-Step/acestep-v15-turbo-continuous) | Turbo DiT (continuous shift 1-5)                                                      |
 
-### 💡 Which Model Should I Choose?
+### 💡 どのモデルを選ぶべき？
 
-ACE-Step automatically adapts to your GPU's VRAM. Here's a quick guide:
+ACE-StepはGPUのVRAMに合わせて自動的に適応します。簡易ガイドはこちら：
 
-| Your GPU VRAM | Recommended LM Model | Notes |
-|---------------|---------------------|-------|
-| **≤6GB** | None (DiT only) | LM disabled by default to save memory |
-| **6-12GB** | `acestep-5Hz-lm-0.6B` | Lightweight, good balance |
-| **12-16GB** | `acestep-5Hz-lm-1.7B` | Better quality |
-| **≥16GB** | `acestep-5Hz-lm-4B` | Best quality and audio understanding |
+| あなたのGPU VRAM | 推奨LMモデル          | メモ                                 |
+| ---------------- | --------------------- | ------------------------------------ |
+| **≤6GB**         | なし (DiTのみ)        | メモリ節約のためLMはデフォルトで無効 |
+| **6-12GB**       | `acestep-5Hz-lm-0.6B` | 軽量、バランス良好                   |
+| **12-16GB**      | `acestep-5Hz-lm-1.7B` | より高品質                           |
+| **≥16GB**        | `acestep-5Hz-lm-4B`   | 最高品質とオーディオ理解能力         |
 
-> 📖 **For detailed GPU compatibility information** (duration limits, batch sizes, memory optimization), see GPU Compatibility Guide: [English](./docs/en/GPU_COMPATIBILITY.md) | [中文](./docs/zh/GPU_COMPATIBILITY.md) | [日本語](./docs/ja/GPU_COMPATIBILITY.md)
+> 📖 **詳細なGPU互換性情報**（長さ制限、バッチサイズ、メモリ最適化）については、GPU互換性ガイドを参照してください： [English](./docs/en/GPU_COMPATIBILITY.md) | [中文](./docs/zh/GPU_COMPATIBILITY.md) | [日本語](./docs/ja/GPU_COMPATIBILITY.md)
 
+## 🚀 使い方
 
-## 🚀 Usage
+ACE-Stepを使用するには複数の方法があります：
 
-We provide multiple ways to use ACE-Step:
+| 方法                 | 説明                                                  | ドキュメント                              |
+| -------------------- | ----------------------------------------------------- | ----------------------------------------- |
+| 🖥️ **Gradio Web UI** | 音楽生成のためのインタラクティブなWebインターフェース | [Gradioガイド](./docs/en/GRADIO_GUIDE.md) |
+| 🐍 **Python API**    | 統合のためのプログラムからのアクセス                  | [推論 API](./docs/en/INFERENCE.md)        |
+| 🌐 **REST API**      | サービス向けのHTTPベース非同期API                     | [REST API](./docs/en/API.md)              |
 
-| Method | Description | Documentation |
-|--------|-------------|---------------|
-| 🖥️ **Gradio Web UI** | Interactive web interface for music generation | [Gradio Guide](./docs/en/GRADIO_GUIDE.md) |
-| 🐍 **Python API** | Programmatic access for integration | [Inference API](./docs/en/INFERENCE.md) |
-| 🌐 **REST API** | HTTP-based async API for services | [REST API](./docs/en/API.md) |
+**📚 ドキュメント言語:** [English](./docs/en/) | [中文](./docs/zh/) | [日本語](./docs/ja/)
 
-**📚 Documentation available in:** [English](./docs/en/) | [中文](./docs/zh/) | [日本語](./docs/ja/)
+## 📖 チュートリアル
 
-## 📖 Tutorial
+**🎯 必読:** ACE-Step 1.5の設計思想と使用方法に関する包括的なガイドです。
 
-**🎯 Must Read:** Comprehensive guide to ACE-Step 1.5's design philosophy and usage methods.
+| 言語       | リンク                                        |
+| ---------- | --------------------------------------------- |
+| 🇺🇸 English | [English Tutorial](./docs/en/Tutorial.md)     |
+| 🇨🇳 中文    | [中文教程](./docs/zh/Tutorial.md)             |
+| 🇯🇵 日本語  | [日本語チュートリアル](./docs/ja/Tutorial.md) |
 
-| Language | Link |
-|----------|------|
-| 🇺🇸 English | [English Tutorial](./docs/en/Tutorial.md) |
-| 🇨🇳 中文 | [中文教程](./docs/zh/Tutorial.md) |
-| 🇯🇵 日本語 | [日本語チュートリアル](./docs/ja/Tutorial.md) |
+このチュートリアルでは以下をカバーしています：
 
-This tutorial covers:
-- Mental models and design philosophy
-- Model architecture and selection
-- Input control (text and audio)
-- Inference hyperparameters
-- Random factors and optimization strategies
+- メンタルモデルと設計思想
+- モデルアーキテクチャと選択
+- 入力制御 (テキストおよびオーディオ)
+- 推論ハイパーパラメータ
+- ランダム要素と最適化戦略
 
-## 🔨 Train
+## 🔨 学習
 
-See the **LoRA Training** tab in Gradio UI for one-click training, or check [Gradio Guide - LoRA Training](./docs/en/GRADIO_GUIDE.md#lora-training) for details.
+Gradio UIの **LoRA Training** タブでワンクリック学習を行うか、詳細は [Gradio Guide - LoRA Training](./docs/en/GRADIO_GUIDE.md#lora-training) を確認してください。
 
-## 🏗️ Architecture
+## 🏗️ アーキテクチャ
 
 <p align="center">
     <img src="./assets/ACE-Step_framework.png" width="100%" alt="ACE-Step Framework">
 </p>
 
-## 🦁 Model Zoo
+## 🦁 モデル Zoo
 
 <p align="center">
     <img src="./assets/model_zoo.png" width="100%" alt="Model Zoo">
 </p>
 
-### DiT Models
+### DiT モデル
 
-| DiT Model | Pre-Training | SFT | RL | CFG | Step | Refer audio | Text2Music | Cover | Repaint | Extract | Lego | Complete | Quality | Diversity | Fine-Tunability | Hugging Face |
-|-----------|:------------:|:---:|:--:|:---:|:----:|:-----------:|:----------:|:-----:|:-------:|:-------:|:----:|:--------:|:-------:|:---------:|:---------------:|--------------|
-| `acestep-v15-base` | ✅ | ❌ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | High | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-base) |
-| `acestep-v15-sft` | ✅ | ✅ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | High | Medium | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-sft) |
-| `acestep-v15-turbo` | ✅ | ✅ | ❌ | ❌ | 8 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | Very High | Medium | Medium | [Link](https://huggingface.co/ACE-Step/Ace-Step1.5) |
-| `acestep-v15-turbo-rl` | ✅ | ✅ | ✅ | ❌ | 8 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | Very High | Medium | Medium | To be released |
+| DiT モデル             | 事前学習 | SFT | RL  | CFG | ステップ数 | 音声参照 | Text2Music | カバー | リペイント | 抽出 | Lego | 補完 |    品質    | 多様性 | 微調整 | Hugging Face                                             |
+| ---------------------- | :------: | :-: | :-: | :-: | :--------: | :------: | :--------: | :----: | :--------: | :--: | :--: | :--: | :--------: | :----: | :----: | -------------------------------------------------------- |
+| `acestep-v15-base`     |    ✅    | ❌  | ❌  | ✅  |     50     |    ✅    |     ✅     |   ✅   |     ✅     |  ✅  |  ✅  |  ✅  |     中     |   高   |  容易  | [Link](https://huggingface.co/ACE-Step/acestep-v15-base) |
+| `acestep-v15-sft`      |    ✅    | ✅  | ❌  | ✅  |     50     |    ✅    |     ✅     |   ✅   |     ✅     |  ❌  |  ❌  |  ❌  |     高     |   中   |  容易  | [Link](https://huggingface.co/ACE-Step/acestep-v15-sft)  |
+| `acestep-v15-turbo`    |    ✅    | ✅  | ❌  | ❌  |     8      |    ✅    |     ✅     |   ✅   |     ✅     |  ❌  |  ❌  |  ❌  | 非常に高い |   中   |  普通  | [Link](https://huggingface.co/ACE-Step/Ace-Step1.5)      |
+| `acestep-v15-turbo-rl` |    ✅    | ✅  | ✅  | ❌  |     8      |    ✅    |     ✅     |   ✅   |     ✅     |  ❌  |  ❌  |  ❌  | 非常に高い |   中   |  普通  | 近日公開                                                 |
 
-### LM Models
+### LM モデル
 
-| LM Model | Pretrain from | Pre-Training | SFT | RL | CoT metas | Query rewrite | Audio Understanding | Composition Capability | Copy Melody | Hugging Face |
-|----------|---------------|:------------:|:---:|:--:|:---------:|:-------------:|:-------------------:|:----------------------:|:-----------:|--------------|
-| `acestep-5Hz-lm-0.6B` | Qwen3-0.6B | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | Medium | Weak | ✅ |
-| `acestep-5Hz-lm-1.7B` | Qwen3-1.7B | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | Medium | Medium | ✅ |
-| `acestep-5Hz-lm-4B` | Qwen3-4B | ✅ | ✅ | ✅ | ✅ | ✅ | Strong | Strong | Strong | ✅ |
+| LM モデル             | ベースモデル | 事前学習 | SFT | RL  | CoT メタ | クエリ書き換え | オーディオ理解 | 作曲能力 | メロディコピー | Hugging Face |
+| --------------------- | ------------ | :------: | :-: | :-: | :------: | :------------: | :------------: | :------: | :------------: | ------------ |
+| `acestep-5Hz-lm-0.6B` | Qwen3-0.6B   |    ✅    | ✅  | ✅  |    ✅    |       ✅       |       中       |    中    |      弱い      | ✅           |
+| `acestep-5Hz-lm-1.7B` | Qwen3-1.7B   |    ✅    | ✅  | ✅  |    ✅    |       ✅       |       中       |    中    |      普通      | ✅           |
+| `acestep-5Hz-lm-4B`   | Qwen3-4B     |    ✅    | ✅  | ✅  |    ✅    |       ✅       |       強       |    強    |      強い      | ✅           |
 
-## 📜 License & Disclaimer
+## 📜 ライセンス & 免責事項
 
-This project is licensed under [MIT](./LICENSE)
+本プロジェクトは [MIT](./LICENSE) ライセンスの下で提供されています。
 
-ACE-Step enables original music generation across diverse genres, with applications in creative production, education, and entertainment. While designed to support positive and artistic use cases, we acknowledge potential risks such as unintentional copyright infringement due to stylistic similarity, inappropriate blending of cultural elements, and misuse for generating harmful content. To ensure responsible use, we encourage users to verify the originality of generated works, clearly disclose AI involvement, and obtain appropriate permissions when adapting protected styles or materials. By using ACE-Step, you agree to uphold these principles and respect artistic integrity, cultural diversity, and legal compliance. The authors are not responsible for any misuse of the model, including but not limited to copyright violations, cultural insensitivity, or the generation of harmful content.
+ACE-Stepは、多様なジャンルにわたるオリジナルの音楽生成を可能にし、クリエイティブな制作、教育、エンターテインメントへの応用が可能です。肯定的かつ芸術的な使用事例をサポートするように設計されていますが、スタイルの類似性による意図しない著作権侵害、文化的要素の不適切な混合、有害なコンテンツの生成への悪用などの潜在的なリスクを認識しています。責任ある使用を保証するため、ユーザーには生成された作品のオリジナリティを確認し、AIの関与を明確に開示し、保護されたスタイルや素材を採用する場合は適切な許可を得ることを推奨します。ACE-Stepを使用することで、これらの原則を支持し、芸術的完全性、文化的多様性、法的コンプライアンスを尊重することに同意したものとみなされます。著者は、著作権侵害、文化的無神経さ、または有害なコンテンツの生成を含むがこれらに限定されない、モデルの悪用について一切の責任を負いません。
 
-🔔 Important Notice  
-The only official website for the ACE-Step project is our GitHub Pages site.    
- We do not operate any other websites.  
-🚫 Fake domains include but are not limited to:
+🔔 重要なお知らせ  
+ACE-Stepプロジェクトの唯一の公式サイトはGitHub Pagesサイトのみです。  
+私たちは他のいかなるウェブサイトも運営していません。  
+🚫 偽ドメインの例：
 ac\*\*p.com, a\*\*p.org, a\*\*\*c.org  
-⚠️ Please be cautious. Do not visit, trust, or make payments on any of those sites.
+⚠️ ご注意ください。これらのサイトにアクセスしたり、信頼したり、支払いをしたりしないようにしてください。
 
-## 🙏 Acknowledgements
+## 🙏 謝辞
 
-This project is co-led by ACE Studio and StepFun.
+このプロジェクトは、ACE StudioとStepFunによって共同主導されています。
 
+## 📖 引用
 
-## 📖 Citation
-
-If you find this project useful for your research, please consider citing:
+本プロジェクトが研究に役立つ場合は、引用をお願いします：
 
 ```BibTeX
 @misc{gong2026acestep,
 	title={ACE-Step 1.5: Pushing the Boundaries of Open-Source Music Generation},
-	author={Junmin Gong, Yulin Song, Wenxiao Zhao, Sen Wang, Shengyuan Xu, Jing Guo}, 
+	author={Junmin Gong, Yulin Song, Wenxiao Zhao, Sen Wang, Shengyuan Xu, Jing Guo},
 	howpublished={\url{https://github.com/ace-step/ACE-Step-1.5}},
 	year={2026},
 	note={GitHub repository}
