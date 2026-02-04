@@ -91,10 +91,10 @@ Windowsユーザー向けに、依存関係がインストール済みのポー�
 
 ```bash
 # Gradio Web UI
-python_embeded\python -m acestep.entry.gradio_app
+python_embeded\python acestep\acestep_v15_pipeline.py
 
 # REST API サーバー
-python_embeded\python -m acestep.entry.api_server
+python_embeded\python acestep\api_server.py
 ```
 
 ---
@@ -182,6 +182,22 @@ uv add --dev package-name
 # すべての依存関係を更新
 uv sync --upgrade
 ```
+
+## � その他のGPUサポート
+
+### Intel GPU
+
+現在、Intel GPUをサポートしています。
+
+- **テスト済みデバイス**: Ultra 9 285H 内蔵グラフィックス搭載のWindowsラップトップ。
+- **設定**:
+  - `offload`（オフロード）はデフォルトで無効。
+  - `compile`（コンパイル）と `quantization`（量子化）はデフォルトで有効。
+- **機能**: LLM推論をサポートしています（`acestep-5Hz-lm-0.6B` でテスト済み）。
+  - _注意_: 2分を超えるオーディオを生成する場合、LLM推論速度が低下する可能性があります。
+  - _注意_: Intel GPUでは、LLM推論のための `nanovllm` アクセラレーションは現在サポートされていません。
+- **テスト環境**: [Intel Extension for PyTorch](https://pytorch-extension.intel.com/?request=platform) の PyTorch 2.8.0。
+- **Intel ディスクリート GPU**: 動作すると予想されますが、開発者がデバイスを持っていないため未テストです。コミュニティからのフィードバックをお待ちしています。
 
 ## 📥 モデルのダウンロード
 
